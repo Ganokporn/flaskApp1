@@ -5,5 +5,12 @@
         "price": 34,
         "available": true,
         "level": "Beginner"
+    },
+    {
+        "title": "hi you i love you",
+        "description": "hello word",
+        "price": 2,
+        "available": true,
+        "level": "Beginner"
     }
 ]
