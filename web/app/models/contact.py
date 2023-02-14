@@ -20,3 +20,6 @@ class Contact(db.Model, SerializerMixin):
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
+   
+
+

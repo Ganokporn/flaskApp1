@@ -1,5 +1,6 @@
 body {
-    background-color: #e7ecf0;
+    background-color: #f3c8e1;
+    font-family: 'Kanit', Arial, Helvetica, sans-serif;
 }
 nav {
     background-color: #ffffff;
@@ -21,12 +22,38 @@ img.tw-user-medium {
  
 #nav-tweet-btn {
     border-radius: 20px;
-    background-color: #67b1f9;
+    background-color: #1d9bf0;
     color: #ffffff;
+}
+#nav-tweet-btn- {
+    border-radius: 20px;
+    background-color: #1d9bf0;
+    color: #ffffff;
+    margin-left: 350px;
+    margin-top: 10px;
+}
+#tweet-input{
+    outline : none;
+    border : none;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 50px;
+
+}
+#tweet-input-box{
+    width: 100%;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    /* margin-bottom: 16px; */
+    resize: vertical;
 }
 .content-box {
     background-color: #ffffff;
-    margin-bottom 10px;
+    margin-bottom :10px;
+
 }
 .new-tweet-row {
     background-color: #eaf5fe;
@@ -38,6 +65,7 @@ img.tw-user-medium {
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #edf1f4;
+    margin-top: 10px;
 }
  
 .tweet-username {
@@ -53,3 +81,6 @@ img.tw-user-medium {
     padding-right: 10px;
 }
 
+
+/* outline : none; */
+/* border : none; */
