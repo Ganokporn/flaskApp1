@@ -97,16 +97,13 @@ def lab10_remove_contacts():
             raise
     return lab10_db_contacts()
 
-# @app.route('/lab11')
-# def lab11_microblog():
-#     return  app.send_static_file('lab11_microblog.html')
-
 @app.route("/lab11/contacts")
 def lab11_db_blogentry():
     blogentry = []
     db_contacts = BlogEntry.query.all()
 
     blogentry = list(map(lambda x: x.to_dict(), db_contacts))
+    blogentry.sort(key=lambda x:x['id'])
     app.logger.debug("DB Contacts: " + str(blogentry))
 
     return jsonify(blogentry)
@@ -119,7 +116,8 @@ def lab11_microblog():
         id_ = result.get('id', '')
         validated = True
         validated_dict = dict()
-        valid_keys = ['name', 'email', 'message']
+        # valid_keys = ['name', 'email', 'message']
+        valid_keys = ['name', 'email', 'message', 'date_created' , 'date_updated']
 
         # validate the input
         for key in result:

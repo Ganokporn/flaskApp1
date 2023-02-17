@@ -19,7 +19,7 @@ def seed_db():
         Contact(firstname='สมชาย', lastname='ทรงแบด', phone='081-111-1111'))
     # db.session.commit()
     db.session.add(
-        # Contact(name='สมชาย', message='I Love You', email='Somchai@gmail.com'))
+        # BlogEntry(name='สมชาย', message='I Love You', email='Somchai@gmail.com'))
         BlogEntry(name='สมหญิง', message='I Love You', email='Somchai@gmail.com'))
     db.session.commit()
 

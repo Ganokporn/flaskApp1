@@ -5,7 +5,10 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -28,7 +31,7 @@
       <form class="form-inline">
         <input class="form-control" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp;
         <img class="tw-user-small rounded-circle" src="static/img/tweeterUserSmall.jpg"> &nbsp;
-        <button class="btn" id="nav-tweet-btn" type="submit">Tweet</button>
+        <!-- <button class="btn" id="nav-tweet-btn" type="submit">Tweet</button> -->
       </form>
     </div>
   </nav>
@@ -46,56 +49,20 @@
                 <img src="static/img/tweeterUserSmall.jpg" class="tw-user-medium rounded-circle mx-auto d-block">
               </div>
               <div class="col-md-9">
-                
                 <form id="addpotstweet">
-                  <input type="text" id="tweet-input-box" name="name" placeholder="Your name.." required>
-                  <input type="email" id="tweet-input-box" name="email" placeholder="Your email.." required>
-                  <input type="text" id="tweet-input" name="message"  placeholder="Whats happening?">
-                  <!-- <button id="clear_form" type="button">Clear</button> -->
+                  <input type="text" id="name" name="name" placeholder="Your name.." required>
+                  <input type="email" id="email" name="email" placeholder="Your email.." required>
+                  <input type="text" id="message" name="message"  placeholder="Whats happening?">
+
                   <!-- <button class="btn" id="nav-tweet-btn-" type="submit">Tweet</button> -->
-                  <input type="submit" name="submit" value="Submit">
-                  <button id="clear_form" type="button">Clear</button>
+                  <input type="submit" id="submit"name="submit" value="Tweet">
+                  <!-- <button id="clear_form" type="button">Clear</button> -->
                 </form>
               </div>
             </div>
           </div>
           <!-- mytwitter -->
-          <div class="tweet" id="tweet-data">
-            <div class="row">
-              <div class="col-md-2 text-center">
-                <img class="tw-user-medium rounded-circle" src="static/img/tweeterUserSmall.jpg">
-              </div>
-              <div class="col-md-10">
-                <div class="row tweet-info">
-                  <div class="col-md-auto">
-
-                    <!-- <span class="tweet-username">Hamster News</span> -->
-                    <span data-field="name"></span>
-                    <!-- <span class="tweet-usertag text-muted">@hamsternews</span>- -->
-                    <span data-field="email"></span>-
-                    <span class="tweet-age text-muted">1d</span>
-                  </div>
-                  <div class="col tweet-arrow text-muted">
-                    <span class="oi oi-arrow-thick-bottom float-right"></span>
-                  </div>
-                </div>
-                <div class="tweet-text">
-                  <span data-field="message"></span>
-                  <!-- Hamsters like to run all night long, keeping -->
-                  <!-- you awake!!! -->
-                </div>
-                <!-- <div class="tweet-media">
-                  <img class="img-fluid rounded" src="https://i.pinimg.com/564x/ee/27/96/ee2796bd4c7dd472614767fd7727584a.jpg">
-                </div> -->
-                <!-- <div class="row text-muted">
-                  <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
-                  <div class="col-md-2"><span class="oi oi-loop-circular"></span></div>
-                  <div class="col-md-2"><span class="oi oi-heart"></span></div>
-                  <div class="col-md-2"><span class="oi oi-envelope-open"></span></div>
-                </div> -->
-              </div>
-            </div>
-          </div>
+          <div class="tweet" id="tweet-data"></div>
         <!-- end post  -->
         </div>
       </div>
@@ -104,12 +71,29 @@
       </div>
     </div>
   </div>
-  <script>
-    $("#addpotstweet").submit(function (event) {
-      // prevent default html form submission action
+</body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS  -->
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script>
+    
+      $(document).ready(function () {
+        (function (data) {
+          $.getJSON("lab11/contacts", populate_feed);
+        })();
+      });
+
+      $("#addpotstweet").submit(function (event) {
       event.preventDefault();
 
-      // pack the inputs into a dictionary
       var formData = {};
       $(":input").each(function () {
         var key = $(this).attr('name');
@@ -124,59 +108,77 @@
       var $form = $(this);
       var url = $form.attr("action");
 
-      // make a POST call to the back end w/ a callback to refresh the table
-      $.post(url, formData, function (contact_data) {
+       $.post(url, formData, function (contact_data) {
         refresh_table(contact_data);
         clearForm();
       });
-
-      // toggleView();
-    });
-    
-
-    function populate_table(contact_data) {
-      $('#tweet-data').bootstrapTable({
-        data: contact_data
-      });
-    }
-    $(document).ready(function () {
-      (function () {
-        $.getJSON("lab11/contacts", populate_table);
-      })();
     });
 
     function clearForm() {
       $('#addpotstweet')[0].reset();
       $('#entryid').val('');
     }
-    
-    function prePopulateForm(row) {
-      $('#addpotstweet')[0].reset();
-      $('#name').val(row.name);
-      $('#email').val(row.email);
-      $('#message').val(row.message);
-      $('#entryid').val(row.id);
-      // toggleView();
 
+    function populate_feed(contact_data) {
+      var time = date_time();
+      // var date = new Date();
+      // var offset = date.getTimezoneOffset()
+      // const db_datetime = new Date((Date.pare(contact_data.date_created)-(offset*60*1000))).toLocaleString("en-GB")
+      const data = { "data" : contact_data}
+      var html =({name, email, message})=> {
+        return `&nbsp;<div class="row">
+              <div class="col-md-2 text-center">
+                <img class="tw-user-medium rounded-circle" src="static/img/tweeterUserSmall.jpg">
+              </div>
+              <div class="col-md-10">
+                <div class="row tweet-info">
+                  <div class="col-md-auto">
+                    <span class="tweet-username">${name}</span>
+                    <span class="tweet-usertag text-muted">${email}</span>
+                    <span class="tweet-age text-muted">${time}</span>
+                  </div>
+                  <div class="col tweet-arrow text-muted">
+                    <span data-field="operation" data-formatter="actionFormatter" data-events="operateEvents"></span>
+                  </div>
+                </div>
+                <div class="tweet-text" >
+                  <span data-field="message">${message}</span>
+                </div>
+                
+                <div class="row text-muted">
+                  <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
+                  <div class="col-md-2"><span class="oi oi-loop-circular"></span></div>
+                  <div class="col-md-2"><span class="oi oi-heart"></span></div>
+                  <div class="col-md-2"><span class="oi oi-envelope-open"></span></div>
+                </div>
+              </div>
+            </div>&nbsp;`};
+            var blog = data.data.map(html);
+            blog.forEach((blog) => {
+              document.getElementById("tweet-data").innerHTML = blog + document.getElementById("tweet-data").innerHTML;
+            });
+          }
+   
+    function refresh_table(contact_data) {
+      document.getElementById("tweet-data").innerHTML = '';
+      document.getElementById("tweet-data").addEventListener('load',populate_feed(contact_data));
     }
 
-    $("#clear_form").click(function () {
-      clearForm();
-    });
-  </script>
+    function date_time(){
+      var date = new Date();
+      var offset =  ("00" + date.getHours()).slice(-2) + ":" +
+                    ("00" + date.getMinutes()).slice(-2) + ":" +
+                    ("00" + date.getSeconds()).slice(-2)+ "  "+
+                     
+                    ("00" + (date.getMonth() + 1)).slice(-2) + " "  +
+                    ("00" + date.getDate()).slice(-2) + "," +
+                    date.getFullYear();
+
+      console.log(offset);
+      return offset
+    }
 
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-</body>
- 
+    
+      </script>
 </html>

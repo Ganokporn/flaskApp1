@@ -25,14 +25,20 @@ img.tw-user-medium {
     background-color: #1d9bf0;
     color: #ffffff;
 }
-#nav-tweet-btn- {
-    border-radius: 20px;
-    background-color: #1d9bf0;
-    color: #ffffff;
-    margin-left: 350px;
-    margin-top: 10px;
-}
-#tweet-input{
+#submit{
+  background-color: #df34e8;
+  margin: 0px,0px,0px,12px;
+  padding: 4px 16px;
+  border-radius: 15px;
+  border: none;
+  color: #f5f1f1;
+  margin-left: 300px;
+  }
+#submit:hover {background-color: #dc9aed}
+
+
+
+#message{
     outline : none;
     border : none;
     width: 100%;
@@ -40,7 +46,17 @@ img.tw-user-medium {
     margin-bottom: 50px;
 
 }
-#tweet-input-box{
+#name{
+    width: 100%;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    /* margin-bottom: 16px; */
+    resize: vertical;
+}
+#email{
     width: 100%;
     padding: 2px;
     border: 1px solid #ccc;
@@ -71,7 +87,9 @@ img.tw-user-medium {
 .tweet-username {
     font-weight: bold;
 }
- 
+.tweet-usertag text-muted{
+    font-size: medium;
+}
 .tweet-arrow {
     padding-right: 25px;
 }
