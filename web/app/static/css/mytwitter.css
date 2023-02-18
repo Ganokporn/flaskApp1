@@ -36,15 +36,21 @@ img.tw-user-medium {
   }
 #submit:hover {background-color: #dc9aed}
 
+#tweet-data{
+    margin-top: 20px;
+}
 
-
+#addpotstweet{
+    margin-right: 40px;
+}
 #message{
     outline : none;
     border : none;
     width: 100%;
+    font-size: x-large;
     margin-top: 10px;
     margin-bottom: 50px;
-
+    word-wrap: break-word;
 }
 #name{
     width: 100%;
@@ -53,7 +59,6 @@ img.tw-user-medium {
     border-radius: 8px;
     box-sizing: border-box;
     margin-top: 6px;
-    /* margin-bottom: 16px; */
     resize: vertical;
 }
 #email{
@@ -63,13 +68,14 @@ img.tw-user-medium {
     border-radius: 8px;
     box-sizing: border-box;
     margin-top: 6px;
-    /* margin-bottom: 16px; */
     resize: vertical;
+}
+#button{
+    margin-left: 2cm;
 }
 .content-box {
     background-color: #ffffff;
     margin-bottom :10px;
-
 }
 .new-tweet-row {
     background-color: #eaf5fe;
@@ -94,11 +100,18 @@ img.tw-user-medium {
     padding-right: 25px;
 }
  
-.tweet-text,
+.tweet-text{
+    width: 380px; 
+    word-wrap: break-word;
+}
 .tweet-media {
     padding-right: 10px;
 }
 
+.btn-outline-secondary{
+    border-radius: 50%;
+    margin-left: 380px;
+}
 
 /* outline : none; */
 /* border : none; */

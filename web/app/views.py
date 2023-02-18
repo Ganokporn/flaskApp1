@@ -97,6 +97,21 @@ def lab10_remove_contacts():
             raise
     return lab10_db_contacts()
 
+@app.route('/lab11/remove_contact', methods=('GET', 'POST'))
+def lab11_remove_contacts():
+    app.logger.debug("LAB11 - REMOVE")
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        id_ = result.get('id', '')
+        try:
+            blogentry = BlogEntry.query.get(id_)
+            db.session.delete(blogentry)
+            db.session.commit()
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return lab11_db_blogentry()
+
 @app.route("/lab11/contacts")
 def lab11_db_blogentry():
     blogentry = []
@@ -117,7 +132,7 @@ def lab11_microblog():
         validated = True
         validated_dict = dict()
         # valid_keys = ['name', 'email', 'message']
-        valid_keys = ['name', 'email', 'message', 'date_created' , 'date_updated']
+        valid_keys = ['name', 'email', 'message']
 
         # validate the input
         for key in result:
@@ -148,3 +163,4 @@ def lab11_microblog():
 
         return lab11_db_blogentry()
     return app.send_static_file('lab11_microblog.html')
+

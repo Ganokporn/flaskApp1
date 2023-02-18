@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="en">
- 
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- 
-<link rel="stylesheet" href="static/css/mytwitter.css">
-<link rel="stylesheet" href="static/css/open-iconic-bootstrap.css">
- 
+
+  <link rel="stylesheet" href="static/css/mytwitter.css">
+  <link rel="stylesheet" href="static/css/open-iconic-bootstrap.css">
+
   <title>My Twitter</title>
 </head>
- 
+
 <body>
   <nav class="navbar navbar-expand-md navbar-light">
     <div class="container">
@@ -50,20 +50,20 @@
               </div>
               <div class="col-md-9">
                 <form id="addpotstweet">
+                  <button type="button" class="btn btn-outline-secondary" onclick="clearForm()"><span class="oi oi-circle-x"></button>
                   <input type="text" id="name" name="name" placeholder="Your name.." required>
+                  <!-- <input type="text" id="name" name="name" value="${name}"placeholder="Your name.."> -->
                   <input type="email" id="email" name="email" placeholder="Your email.." required>
-                  <input type="text" id="message" name="message"  placeholder="Whats happening?">
-
+                  <textarea rows="3" id="message" name="message" placeholder="Whats happening?" required></textarea>
                   <!-- <button class="btn" id="nav-tweet-btn-" type="submit">Tweet</button> -->
-                  <input type="submit" id="submit"name="submit" value="Tweet">
-                  <!-- <button id="clear_form" type="button">Clear</button> -->
+                  <input type="submit" id="submit" name="submit" value="Tweet">
                 </form>
               </div>
             </div>
           </div>
           <!-- mytwitter -->
           <div class="tweet" id="tweet-data"></div>
-        <!-- end post  -->
+          <!-- end post  -->
         </div>
       </div>
       <div id="right_3" class="col-md-3">
@@ -72,61 +72,59 @@
     </div>
   </div>
 </body>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS  -->
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS  -->
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-    <script>
-    
-      $(document).ready(function () {
-        (function (data) {
-          $.getJSON("lab11/contacts", populate_feed);
-        })();
-      });
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
 
-      $("#addpotstweet").submit(function (event) {
-      event.preventDefault();
+  $(document).ready(function () {
+    (function (data) {
+      $.getJSON("lab11/contacts", populate_feed);
+    })();
+  });
 
-      var formData = {};
-      $(":input").each(function () {
-        var key = $(this).attr('name');
-        var val = $(this).val();
+  $("#addpotstweet").submit(function (event) {
+    event.preventDefault();
 
-        if (key != 'submit') {
-          formData[key] = val;
-        }
+    var formData = {};
+    $(":input").each(function () {
+      var key = $(this).attr('name');
+      var val = $(this).val();
 
-      });
+      if (key != 'submit') {
+        formData[key] = val;
+      }
 
-      var $form = $(this);
-      var url = $form.attr("action");
-
-       $.post(url, formData, function (contact_data) {
-        refresh_table(contact_data);
-        clearForm();
-      });
     });
 
-    function clearForm() {
-      $('#addpotstweet')[0].reset();
-      $('#entryid').val('');
-    }
+    var $form = $(this);
+    var url = $form.attr("action");
 
-    function populate_feed(contact_data) {
-      var time = date_time();
-      // var date = new Date();
-      // var offset = date.getTimezoneOffset()
-      // const db_datetime = new Date((Date.pare(contact_data.date_created)-(offset*60*1000))).toLocaleString("en-GB")
-      const data = { "data" : contact_data}
-      var html =({name, email, message})=> {
-        return `&nbsp;<div class="row">
+    $.post(url, formData, function (contact_data) {
+      refresh_table(contact_data);
+      clearForm();
+    });
+  });
+
+  function clearForm() {
+    $('#addpotstweet')[0].reset();
+    $('#entryid').val('');
+  }
+
+  function populate_feed(contact_data) {
+    // var time = date_time();
+    // var date = new Date();
+    // var offset = date.getTimezoneOffset()
+    const data = { "data": contact_data }
+    var html = ({ name, email, message, date_created, id }) => {
+      const db_datetime = new Date(date_created + " UTC").toLocaleString("en-GB")
+      return `&nbsp;<div class="row">
               <div class="col-md-2 text-center">
                 <img class="tw-user-medium rounded-circle" src="static/img/tweeterUserSmall.jpg">
               </div>
@@ -134,51 +132,66 @@
                 <div class="row tweet-info">
                   <div class="col-md-auto">
                     <span class="tweet-username">${name}</span>
-                    <span class="tweet-usertag text-muted">${email}</span>
-                    <span class="tweet-age text-muted">${time}</span>
+                    <span class="tweet-usertag text-muted">${email}</span>&nbsp;
+                    <button id="button-" class="btn btn-outline-danger" value="${id}" onclick="removeItem(this.value)"><span class="oi oi-trash"></button>
+                  <div>
+                    <span class="tweet-age text-muted">${db_datetime}</span>
+                    <button id="button-" class="btn btn-outline-warning" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush"></button>
                   </div>
+                </div>
                   <div class="col tweet-arrow text-muted">
-                    <span data-field="operation" data-formatter="actionFormatter" data-events="operateEvents"></span>
                   </div>
                 </div>
                 <div class="tweet-text" >
-                  <span data-field="message">${message}</span>
+                  <span>${message}</span>
                 </div>
                 
-                <div class="row text-muted">
+                <div class="row text-muted"><br> 
+                  <div class="col-md-2"><span class="oi oi-heart"></span></div>
                   <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
                   <div class="col-md-2"><span class="oi oi-loop-circular"></span></div>
-                  <div class="col-md-2"><span class="oi oi-heart"></span></div>
                   <div class="col-md-2"><span class="oi oi-envelope-open"></span></div>
                 </div>
               </div>
-            </div>&nbsp;`};
-            var blog = data.data.map(html);
-            blog.forEach((blog) => {
-              document.getElementById("tweet-data").innerHTML = blog + document.getElementById("tweet-data").innerHTML;
-            });
-          }
-   
-    function refresh_table(contact_data) {
-      document.getElementById("tweet-data").innerHTML = '';
-      document.getElementById("tweet-data").addEventListener('load',populate_feed(contact_data));
+            </div>`};
+    var blog = data.data.map(html);
+    blog.forEach((blog) => {
+      document.getElementById("tweet-data").innerHTML = blog + document.getElementById("tweet-data").innerHTML;
+    });
+  }
+
+  function refresh_table(contact_data) {
+    document.getElementById("tweet-data").innerHTML = '';
+    document.getElementById("tweet-data").addEventListener('load', populate_feed(contact_data));
+  }
+
+  function prePopulateBlog(id) {
+    // document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 50;
+    // backtotop
+    // screenTop();
+    // $('#addpotstweets').val(),
+    $('#name').val(name);
+    // name = $('name').val();
+    $('#email').val(email);
+    $('#message').val(message);
+    // $('#entryid').val(id);
+  }
+
+  function removeItem(id) {
+    if (!confirm("Are you sure to  Delete ?")) {
+      return false;
     }
+    var url = "lab11/remove_contact"
+    var formData = { 'id': id };
+    $.post(url, formData, function (id) {
+      refresh_table(id);
+    });
+  }
 
-    function date_time(){
-      var date = new Date();
-      var offset =  ("00" + date.getHours()).slice(-2) + ":" +
-                    ("00" + date.getMinutes()).slice(-2) + ":" +
-                    ("00" + date.getSeconds()).slice(-2)+ "  "+
-                     
-                    ("00" + (date.getMonth() + 1)).slice(-2) + " "  +
-                    ("00" + date.getDate()).slice(-2) + "," +
-                    date.getFullYear();
-
-      console.log(offset);
-      return offset
-    }
+  
 
 
-    
-      </script>
+</script>
+
 </html>
