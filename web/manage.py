@@ -1,5 +1,4 @@
 from flask.cli import FlaskGroup
-
 from app import app, db
 from app.models.contact import Contact
 from app.models.blogentry import BlogEntry
@@ -20,9 +19,8 @@ def seed_db():
     # db.session.commit()
     db.session.add(
         # BlogEntry(name='สมชาย', message='I Love You', email='Somchai@gmail.com'))
-        BlogEntry(name='สมหญิง', message='I Love You', email='Somchai@gmail.com'))
+        BlogEntry(name='เจ้าหญิงจัสมิน', message='I Love U Aladin', email='jasmin@gmail.com'))
     db.session.commit()
-
 
 
 if __name__ == "__main__":
