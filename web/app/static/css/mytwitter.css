@@ -37,7 +37,7 @@ img.tw-user-medium {
 #submit:hover {background-color: #dc9aed}
 
 #tweet-data{
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #addpotstweet{
@@ -70,11 +70,20 @@ img.tw-user-medium {
     margin-top: 6px;
     resize: vertical;
 }
-#button{
-    margin-left: 2cm;
+#button-{
+    margin-right: 2cm;
+    /* float: right; */
+    outline : none;
+    border : none;
+
+}
+#add-post{
+    font-size: 28px;
+    border-radius: 8px;
+    margin: center;
 }
 .content-box {
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     margin-bottom :10px;
 }
 .new-tweet-row {
@@ -103,6 +112,7 @@ img.tw-user-medium {
 .tweet-text{
     width: 380px; 
     word-wrap: break-word;
+    font-size: x-large;
 }
 .tweet-media {
     padding-right: 10px;

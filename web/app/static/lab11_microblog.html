@@ -50,24 +50,25 @@
               </div>
               <div class="col-md-9">
                 <form id="addpotstweet">
-                  <button type="button" class="btn btn-outline-secondary" onclick="clearForm()"><span class="oi oi-circle-x"></button>
-                  <input type="text" id="name" name="name" placeholder="Your name.." required>
-                  <!-- <input type="text" id="name" name="name" value="${name}"placeholder="Your name.."> -->
-                  <input type="email" id="email" name="email" placeholder="Your email.." required>
-                  <textarea rows="3" id="message" name="message" placeholder="Whats happening?" required></textarea>
-                  <!-- <button class="btn" id="nav-tweet-btn-" type="submit">Tweet</button> -->
+                  <!-- <button type="button" class="btn btn-outline-secondary" onclick="clearForm()"><span class="oi oi-circle-x"></span></button> -->
+                  
+                  <input type="text" id="name" name="name" placeholder="Your name.." required value="${name}">
+                  <input type="email" id="email" name="email" placeholder="Your email.." required value="${email}">
+                  <textarea type="text" rows="3" maxlength="280" id="message" name="message" placeholder="Whats happening?" required></textarea>
+                  <input type="hidden" id="entryid" name="id" value="">
                   <input type="submit" id="submit" name="submit" value="Tweet">
                 </form>
               </div>
             </div>
           </div>
           <!-- mytwitter -->
+          <!-- <button id="add-post" class="btn btn-dark" onclick="toggleView()">Create Post</button> -->
           <div class="tweet" id="tweet-data"></div>
           <!-- end post  -->
         </div>
       </div>
       <div id="right_3" class="col-md-3">
-        <!-- <div class="content-box">Who to follow</div> -->
+        <!-- <div class="content-box">Trends for you</div> -->
       </div>
     </div>
   </div>
@@ -118,12 +119,10 @@
   }
 
   function populate_feed(contact_data) {
-    // var time = date_time();
-    // var date = new Date();
-    // var offset = date.getTimezoneOffset()
     const data = { "data": contact_data }
-    var html = ({ name, email, message, date_created, id }) => {
-      const db_datetime = new Date(date_created + " UTC").toLocaleString("en-GB")
+    var html = ({ name, email, message, date_created, date_updated, id }) => {
+      const db_datetime_crested = new Date(date_created + " UTC").toLocaleString("en-GB")
+      const db_datetime_updated = new Date(date_updated + " UTC").toLocaleString("en-GB")
       return `&nbsp;<div class="row">
               <div class="col-md-2 text-center">
                 <img class="tw-user-medium rounded-circle" src="static/img/tweeterUserSmall.jpg">
@@ -131,21 +130,21 @@
               <div class="col-md-10">
                 <div class="row tweet-info">
                   <div class="col-md-auto">
-                    <span class="tweet-username">${name}</span>
-                    <span class="tweet-usertag text-muted">${email}</span>&nbsp;
-                    <button id="button-" class="btn btn-outline-danger" value="${id}" onclick="removeItem(this.value)"><span class="oi oi-trash"></button>
+                    <span class="tweet-username" id="${id}name">${name}</span>
+                    <span class="tweet-usertag text-muted" id="${id}email">${email}</span>&nbsp;
+                    <button id="button-" class="btn btn-outline-danger float-right" value = "${id}" onclick="removeItem(this.value)"><span class="oi oi-trash float-right"></button>
                   <div>
-                    <span class="tweet-age text-muted">${db_datetime}</span>
-                    <button id="button-" class="btn btn-outline-warning" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush"></button>
+                    <span class="tweet-age text-muted" >post : ${db_datetime_crested}</span><br>
+                    <span class="tweet-age text-muted" >edit : ${db_datetime_updated}</span>
+                    <button id="button-" class="btn btn-outline-warning" value = "${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush"></button>
                   </div>
                 </div>
                   <div class="col tweet-arrow text-muted">
                   </div>
                 </div>
                 <div class="tweet-text" >
-                  <span>${message}</span>
+                  <span id="${id}message">${message}</span>
                 </div>
-                
                 <div class="row text-muted"><br> 
                   <div class="col-md-2"><span class="oi oi-heart"></span></div>
                   <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
@@ -154,6 +153,7 @@
                 </div>
               </div>
             </div>`};
+
     var blog = data.data.map(html);
     blog.forEach((blog) => {
       document.getElementById("tweet-data").innerHTML = blog + document.getElementById("tweet-data").innerHTML;
@@ -166,16 +166,19 @@
   }
 
   function prePopulateBlog(id) {
-    // document.body.scrollTop = 0;
     document.documentElement.scrollTop = 50;
-    // backtotop
-    // screenTop();
-    // $('#addpotstweets').val(),
-    $('#name').val(name);
-    // name = $('name').val();
-    $('#email').val(email);
-    $('#message').val(message);
-    // $('#entryid').val(id);
+    $('#addpotstweet')[0].reset();
+    $('#name').val(document.getElementById(id + 'name').innerHTML);
+    $('#email').val(document.getElementById(id + 'email').innerHTML);
+    $('#message').val(document.getElementById(id + 'message').innerHTML);
+    $('#entryid').val(id);
+  }
+
+  function havepost(id){
+    $('#addpotstweet')[0].reset();
+    $('#name').val(document.getElementById(id + 'name').innerHTML);
+    $('#email').val(document.getElementById(id + 'email').innerHTML);
+    $('#entryid').val(id);
   }
 
   function removeItem(id) {
@@ -189,8 +192,17 @@
     });
   }
 
-  
-
+  function toggleView() {
+      if ($('#add-post').attr('hidden')) {
+        $('#add-post').removeAttr('hidden');
+        $('#addpotstweet').attr('hidden', 'hidden');
+        // $('#name').val(document.getElementById(id-1 + 'name').innerHTML);
+        // $('#email').val(document.getElementById(id-1 + 'email').innerHTML);
+      } else {
+        $('#add-post').attr('hidden', 'hidden');
+        $('#addpotstweet').removeAttr('hidden');
+      }
+  }
 
 </script>
 
