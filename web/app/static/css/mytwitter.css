@@ -14,6 +14,10 @@ img.tw-user-small {
 img.tw-user-medium {
     height: 50px;
 }
+img.tw-user-follow{
+    height: 50px;
+    margin-left: 10px;
+}
  
 #nav-search {
     border-radius: 20px;
@@ -122,6 +126,26 @@ img.tw-user-medium {
     border-radius: 50%;
     margin-left: 380px;
 }
+
+.button-follow {
+    background-color: #918e91;
+    margin: 0px,0px,0px,12px;
+    padding: 4px 16px;
+    border-radius: 15px;
+    border: none;
+    color: #f5f1f1;
+    margin-left: 300px;
+}
+.button-follow-chang {
+    background-color: #3768f0;
+    margin: 0px,0px,0px,12px;
+    padding: 4px 16px;
+    border-radius: 15px;
+    border: none;
+    color: #f5f1f1;
+    margin-left: 300px;
+}
+
 
 /* outline : none; */
 /* border : none; */
