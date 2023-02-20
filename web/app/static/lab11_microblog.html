@@ -94,7 +94,6 @@
 
   $("#addpotstweet").submit(function (event) {
     event.preventDefault();
-
     var formData = {};
     $(":input").each(function () {
       var key = $(this).attr('name');
@@ -121,6 +120,8 @@
   }
   function clearMeassage() {
     document.getElementById('message').value = '' 
+    var elem = document.getElementById("tweet-data");
+    elem.scrollIntoView();
     $('#entryid').val('');
   }
   function populate_feed(contact_data) {
@@ -135,16 +136,16 @@
               <div class="col-md-10">
                 <div class="row tweet-info">
                   <div class="col-md-auto">
+                    <button id="button-" class="btn btn-outline-danger float-right" value = "${id}" onclick="removeItem(this.value)"><span class="oi oi-trash float-right"></button>
                     <span class="tweet-username" id="${id}name">${name}</span>
                     <span class="tweet-usertag text-muted" id="${id}email">${email}</span>&nbsp;
-                    <button id="button-" class="btn btn-outline-warning" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush "></button>
-                    <button id="button-" class="btn btn-outline-danger float-right" value = "${id}" onclick="removeItem(this.value)"><span class="oi oi-trash float-right"></button>
                   <div>
                     ${db_datetime_crested == db_datetime_updated ?
                     `<span class="tweet-age text-muted" >post : ${db_datetime_crested}`:
                     `<span class="tweet-age text-muted" >post : ${db_datetime_crested}</span>
                     <span class="tweet-age text-muted" > | edit : ${db_datetime_updated}</span>`
                     }
+                    <button id="button-" class="btn btn-outline-warning float-right" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush "></button>
                   </div>
                 </div>
                   <div class="col tweet-arrow text-muted">
@@ -154,12 +155,13 @@
                   <span id="${id}message">${message}</span>
                 </div>
                 <div class="row text-muted"><br> 
-                  <div class="col-md-2"><span class="oi oi-heart heartincon"></span></div>
-                  <div class="col-md-2"><span class="oi oi-bullhorn"></span></div>
-                  <div class="col-md-2"><span class="oi oi-loop-circular"></span></div>
-                  <div class="col-md-2"><span class="oi oi-envelope-open"></span></div>
+                  <div class="col-md-3"><span class="oi oi-heart heartincon"></span></div>
+                  <div class="col-md-3"><span class="oi oi-bullhorn"></span></div>
+                  <div class="col-md-3"><span class="oi oi-loop-circular"></span></div>
+                  <div class="col-md-3"><span class="oi oi-envelope-open"></span></div>
                 </div>
               </div>
+              <br>
             </div>`};
 
     var blog = data.data.map(html);
@@ -174,7 +176,7 @@
   }
 
   function prePopulateBlog(id) {
-    document.documentElement.scrollTop = 50;
+    document.documentElement.scrollTop = 0;
     $('#addpotstweet')[0].reset();
     $('#name').val(document.getElementById(id + 'name').innerHTML);
     $('#email').val(document.getElementById(id + 'email').innerHTML);

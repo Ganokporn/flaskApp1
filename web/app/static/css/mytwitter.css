@@ -1,6 +1,6 @@
 body {
     background-color: #f3c8e1;
-    font-family: 'Kanit', Arial, Helvetica, sans-serif;
+    font-family: 'Kanit', 'Shantell Sans','Gloock','Pacifico';
 }
 nav {
     background-color: #f4b7f5;
@@ -18,7 +18,16 @@ img.tw-user-follow{
     height: 50px;
     margin-left: 10px;
 }
- 
+.col-md-auto, .text-muted{
+    width: 100%;
+} 
+.tweet-age {
+    font-size:small;
+}
+.new-tweet-row{
+    border-radius: 25px;
+}
+
 #nav-search {
     border-radius: 20px;
     background-color: #e7ecf0
@@ -42,6 +51,7 @@ img.tw-user-follow{
 
 #tweet-data{
     margin-bottom: 20px;
+    border-radius: 20px;
 }
 
 #addpotstweet{
