@@ -1,7 +1,9 @@
 from flask.cli import FlaskGroup
+from werkzeug.security import generate_password_hash
 from app import app, db
 from app.models.contact import Contact
 from app.models.blogentry import BlogEntry
+from app.models.authuser import AuthUser, PrivateContact
 cli = FlaskGroup(app)
 
 
@@ -14,6 +16,14 @@ def create_db():
 
 @cli.command("seed_db")
 def seed_db():
+     db.session.add(
+        AuthUser(email="flask@204212", name='สมชาย ทรงแบด',
+        password=generate_password_hash('1234',method='sha256'),
+        avatar_url='https://ui-avatars.com/api/?name=\สมชาย+ทรงแบด&background=83ee03&color=fff'))
+    db.session.add(
+       PrivateContact(firstname='ส้มโอ', lastname='โอเค',
+                      phone='081-111-1112', owner_id=1))
+
     db.session.add(
         Contact(firstname='สมชาย', lastname='ทรงแบด', phone='081-111-1111'))
     # db.session.commit()
@@ -21,7 +31,7 @@ def seed_db():
         # BlogEntry(name='สมชาย', message='I Love You', email='Somchai@gmail.com'))
         BlogEntry(name='เจ้าหญิงจัสมิน', message='I Love U Aladin', email='jasmin@gmail.com'))
     db.session.commit()
-
+    
 
 if __name__ == "__main__":
     cli()
