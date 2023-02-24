@@ -73,24 +73,25 @@ def lab10_phonebook():
 
         if validated:
             app.logger.debug('validated dict: ' + str(validated_dict))
-            # if there is no id: create a new contact entry
+            # if there is no id_: create contact
             if not id_:
-                 validated_dict['owner_id'] = current_user.id
+                validated_dict['owner_id'] = current_user.id
                 # entry = Contact(**validated_dict)
                 entry = PrivateContact(**validated_dict)
                 app.logger.debug(str(entry))
                 db.session.add(entry)
-            # if there is an id already: update the contact entry
+            # if there is an id_ already: update contact
             else:
                 # contact = Contact.query.get(id_)
                 contact = PrivateContact.query.get(id_)
                 if contact.owner_id == current_user.id:
-                contact.update(**validated_dict)
+                    contact.update(**validated_dict)
 
             db.session.commit()
 
+
         return lab10_db_contacts()
-    return app.send_static_file('lab10_phonebook.html')
+    return render_template('lab10_phonebook.html')
 
 @app.route("/lab10/contacts")
 @login_required
