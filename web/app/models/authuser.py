@@ -23,7 +23,6 @@ class AuthUser(db.Model, UserMixin):
 class PrivateContact(Contact, UserMixin, SerializerMixin):
     owner_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
 
-
     def __init__(self, firstname, lastname, phone, owner_id):
         super().__init__(firstname, lastname, phone)
         self.owner_id = owner_id

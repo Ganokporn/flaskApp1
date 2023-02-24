@@ -30,7 +30,7 @@
       </div>
       <form class="form-inline">
         <input class="form-control" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp;
-        <img class="tw-user-small rounded-circle" src="static/img/jasmin_.jpg"> &nbsp;
+        <img class="tw-user-small rounded-circle" src="{{ current_user.avatar_url }}"> &nbsp;
         <!-- <button class="btn" id="nav-tweet-btn" type="submit">Tweet</button> -->
       </form>
     </div>
@@ -46,7 +46,8 @@
           <div class="new-tweet-row">
             <div class="row">
               <div class="col-md-2">
-                <img src="static/img/jasmin_.jpg" class="tw-user-medium rounded-circle mx-auto d-block">
+                <!-- <img src="{{ current_user.avatar_url }}" class="tw-user-medium rounded-circle mx-auto d-block"> -->
+                <img src="{{ current_user.avatar_url }}" width="52">
               </div>
               <div class="col-md-9">
                 <form id="addpotstweet">
@@ -208,6 +209,15 @@
    $( this ).toggleClass( "iconHeartActive" );
   });
 
+  // $("add_newpost").click(function (tweet-data){
+  //   $.getJSON("lab11/", function(tweet-data){
+  //     if(tweet.lengh == 0){
+  //     return;
+  //   }
+  //   i = tweet
+  //   $('#name').val(i.name);
+  //   $('#email').val(i.email);
+  // )};
 </script>
 
 </html>
