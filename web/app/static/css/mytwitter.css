@@ -1,9 +1,9 @@
 body {
-    background-color: #f3c8e1;
+    background-color: #d1c9ce;
     font-family: 'Kanit', 'Shantell Sans','Gloock','Pacifico';
 }
 nav {
-    background-color: #f4b7f5;
+    background-color: #706f70;
     border-bottom: 1px solid #adb1b4;
     margin-bottom: 10px;
 }
@@ -39,7 +39,7 @@ img.tw-user-follow{
     color: #ffffff;
 }
 #submit{
-  background-color: #df34e8;
+  background-color: #474547;
   margin: 0px,0px,0px,12px;
   padding: 4px 16px;
   border-radius: 15px;
@@ -47,7 +47,7 @@ img.tw-user-follow{
   color: #f5f1f1;
   margin-left: 300px;
   }
-#submit:hover {background-color: #dc9aed}
+#submit:hover {background-color: #c9c4ca}
 
 #tweet-data{
     margin-bottom: 20px;

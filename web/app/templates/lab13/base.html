@@ -26,6 +26,9 @@
              <a href="{{ url_for('lab13_index') }}" class="navbar-item">
                Home
              </a>
+             <a href="{{ url_for('lab11_microblog') }}" class="navbar-item">
+              My Tweet
+            </a>
              {% if current_user.is_authenticated %}
              <a href="{{ url_for('lab13_profile') }}" class="navbar-item">
                Profile

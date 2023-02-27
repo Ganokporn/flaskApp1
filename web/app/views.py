@@ -110,9 +110,9 @@ def lab10_remove_contacts():
         try:
             contact = Contact.query.get(id_)
             # contact = PrivateContact.query.get(id_)
-            # if contact.owner_id == current_user.id:
+            if contact.owner_id == current_user.id:
                 # db.session.delete(**validated_dict)
-            db.session.delete(contact)
+                db.session.delete(contact)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -127,6 +127,7 @@ def lab11_remove_contacts():
         id_ = result.get('id', '')
         try:
             blogentry = BlogEntry.query.get(id_)
+            # if blogEntry.owner_id == current_user.id:
             db.session.delete(blogentry)
             db.session.commit()
         except Exception as ex:
@@ -145,8 +146,14 @@ def lab11_db_blogentry():
 
     return jsonify(blogentry)
 
+@app.route('/lab11/user')
+def lab11_db_user():
+    blogEntrys = []
+    db_blogentry = AuthUser.query.all()
+    blogEntrys = list(map(lambda x: x.to_dict(), db_blogentry))
+    return jsonify(blogEntrys)
+
 @app.route('/lab11', methods=('GET', 'POST'))
-@login_required
 def lab11_microblog():
     if request.method == 'POST':
         result = request.form.to_dict()
@@ -155,7 +162,7 @@ def lab11_microblog():
         validated = True
         validated_dict = dict()
         # valid_keys = ['name', 'email', 'message']
-        valid_keys = ['name', 'email', 'message']
+        valid_keys = ['name', 'email', 'message', 'avatar_url']
 
         # validate the input
         for key in result:
@@ -180,12 +187,14 @@ def lab11_microblog():
             # if there is an id already: update the contact entry
             else:
                 contact = BlogEntry.query.get(id_)
+                # if contact.owner_id == current_user.id:
                 contact.update(**validated_dict)
 
             db.session.commit()
 
         return lab11_db_blogentry()
     return render_template('lab11_microblog.html')
+    
 
 # ------------------lab12---------------------------------
 
@@ -414,4 +423,69 @@ def gen_avatar_url(email, name):
 @login_required
 def lab13_logout():
     logout_user()
-    return redirect(url_for('lab13_index'))
+    return redirect(url_for('lab13_login'))
+
+@app.route('/lab13/change', methods=('GET', 'POST'))
+@login_required
+def lab13_change():
+
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(str(result))
+ 
+        validated = True
+        validated_dict = {}
+        valid_keys = ['email', 'name', 'password']
+
+        # validate the input
+        for key in result:
+            app.logger.debug(str(key)+": " + str(result[key]))
+            # screen of unrelated inputs
+            if not check_password_hash(current_user.password, password):
+                flash('Please check your login details and try again.')
+                return render_template('lab13/change.html')
+
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+            # code to validate and add user to database goes here
+        # app.logger.debug("validation done")
+        if validated:
+            # app.logger.debug(current_user.id)
+            # app.logger.debug('validated dict: ' + str(validated_dict))
+            email = validated_dict['email']
+            name = validated_dict['name']
+            password = validated_dict['password']
+           
+            auth_users = AuthUser.query.get(current_user.id)
+            # validated_dict['password'] = generate_password_hash(password, method='sha256')
+            avatar_url = gen_avatar_url(email, name)
+            validated_dict['avatar_url'] = avatar_url
+            # add the new user to the database
+            auth_users.update(**validated_dict)
+            db.session.commit()
+            app.logger.debug('validated dict : '+str(AuthUser.query.get(current_user.id)))
+            
+        return redirect(url_for('lab11_microblog'))
+    return render_template('lab13/change.html')
+
+@app.route('/lab13/password_change', methods=('GET', 'POST'))
+@login_required
+def lab13_password():
+    if request.method == 'POST':
+        
+        password = request.form.get('password')
+      
+        # user = AuthUser.query.filter_by(email=email).first()
+
+        if not check_password_hash(current_user.password, password):
+            flash('Please check your login details and try again.')
+            # if the user doesn't exist or password is wrong, reload the page
+            return render_template('lab13/password.html')
+    
+    
+        # return redirect(next_page)
+        return redirect(url_for('lab11_microblog'))
+    return render_template('lab13/password.html') 

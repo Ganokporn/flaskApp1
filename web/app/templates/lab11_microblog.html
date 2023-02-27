@@ -20,18 +20,34 @@
 </head>
 
 <body>
+  <div persen_id = {{current_user.id}}></div>
   <nav class="navbar navbar-expand-md navbar-light">
     <div class="container">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="#"><span class="oi oi-home"></span> Home</a>
+        <!-- <a class="nav-item nav-link" href="#"><span class="oi oi-home"></span> Home</a>
         <a class="nav-item nav-link" href="#"><span class="oi oi-bolt"></span> Moments</a>
         <a class="nav-item nav-link" href="#"><span class="oi oi-bell"></span> Notifications</a>
-        <a class="nav-item nav-link" href="#"><span class="oi oi-envelope-open"></span> Messages</a>
+        <a class="nav-item nav-link" href="#"><span class="oi oi-envelope-open"></span> Messages</a> -->
+        <h3>{{ current_user.name }}</h3> &nbsp;
+
       </div>
       <form class="form-inline">
-        <input class="form-control" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp;
-        <img class="tw-user-small rounded-circle" src="{{ current_user.avatar_url }}"> &nbsp;
+        <!-- <input class="form-control" id="nav-search" type="search" placeholder="Search Twitter"> &nbsp; -->
+        <!-- <button value="${id}" onclick="edit_user(this.value)"><img class="tw-user-small rounded-circle" src="{{ current_user.avatar_url }}"></button> &nbsp; -->
+        <img class="tw-user-small rounded-circle" src="{{ current_user.avatar_url }}">&nbsp;
+        <!-- <a href="{{ url_for('lab13_change') }}" class="navbar-item">
+          Edit
+        </a>&nbsp; -->
         <!-- <button class="btn" id="nav-tweet-btn" type="submit">Tweet</button> -->
+        {% if not current_user.is_authenticated %}
+          <button id="login" class="btn btn-dark" type="button">Login</button>&nbsp;
+          <button id="signup" class="btn btn-dark" type="button">Sign Up</button>
+        {% else %}
+          <button id="profileedit" class="btn btn-dark" type="button"><span class="oi oi-cog"></button>&nbsp;
+
+          <button id="logout" class="btn btn-dark" type="button">Logout</button>
+
+        {% endif %}
       </form>
     </div>
   </nav>
@@ -42,27 +58,31 @@
         <!-- <div class="content-box">Trends</div> -->
       </div>
       <div id="center_6" class="col-md-6">
-        <div class="content-box">
-          <div class="new-tweet-row">
+        <div class="content-box" >
+          <div class="new-tweet-row"  hidden="hidden">
             <div class="row">
               <div class="col-md-2">
-                <!-- <img src="{{ current_user.avatar_url }}" class="tw-user-medium rounded-circle mx-auto d-block"> -->
-                <img src="{{ current_user.avatar_url }}" width="52">
+                <img src="{{ current_user.avatar_url }}" class="tw-user-medium rounded-circle mx-auto d-block">
               </div>
               <div class="col-md-9">
                 <form id="addpotstweet">
-                  <button id="button-" class="btn btn-outline-secondary" onclick="clearForm()"><span class="oi oi-circle-x"></span></button>
-                  <input type="text" maxlength="50" id="name" name="name" placeholder="Your name.." required value="เจ้าหญิงจัสมิน">
-                  <input type="email" id="email" name="email" placeholder="Your email.." required value="jasmin@gmail.com">
+                  <button id="cancel_form" class="btn btn-outline-secondary" ><span class="oi oi-circle-x"></span></button>
+                  <input type="hidden" id="avatar_url" name="avatar_url" value="{{ current_user.avatar_url }}">
+                  <input type="text" maxlength="50" id="name" name="name" placeholder="Your name.." required value="{{ current_user.name }}" hidden="hidden">
+                  <input type="email" id="email" name="email" placeholder="Your email.." required value="{{ current_user.email }}" hidden="hidden">
                   <textarea type="text" rows="3" maxlength="280" id="message" name="message" placeholder="Whats happening?" required></textarea>
                   <input type="hidden" id="entryid" name="id" value="">
-                  <input type="submit" id="submit" name="submit" value="Tweet" onclick="clearMeassage">
+                  <input type="submit" id="submit" name="submit" value="Tweet">
                 </form>
               </div>
             </div>
           </div>
           <!-- mytwitter -->
           <!-- <button id="add-post" class="btn btn-dark" onclick="toggleView()">Create Post</button> -->
+          {% if current_user.is_authenticated %}
+          <button id="add-post" class="btn btn-dark" type="button">Create Post</button>
+          {% endif %}
+
           <div class="tweet" id="tweet-data"></div>
           <!-- end post  -->
         </div>
@@ -111,8 +131,9 @@
 
     $.post(url, formData, function (contact_data) {
       refresh_table(contact_data);
-      clearMeassage();
+      // clearMeassage();
     });
+    toggleView();
   });
 
   function clearForm() {
@@ -125,19 +146,31 @@
     elem.scrollIntoView();
     $('#entryid').val('');
   }
+  
   function populate_feed(contact_data) {
     const data = { "data": contact_data }
-    var html = ({ name, email, message, date_created, date_updated, id }) => {
+    
+    var html = ({ name, email, message, date_created, date_updated, id, avatar_url ,owner_id}) => {
       const db_datetime_crested = new Date(date_created + " UTC").toLocaleString("en-GB")
       var db_datetime_updated = new Date(date_updated + " UTC").toLocaleString("en-GB")
+      
+       
+      let edit_delbtn = `
+      <button id="button-" class="btn btn-outline-warning float-right" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush "></button>
+      <button id="button-" class="btn btn-outline-danger float-right" value = "${id}" onclick="removeItem(this.value)"><span class="oi oi-trash float-right"></button>
+      `;
+      if (email !== "{{ current_user.email}}"){
+        edit_delbtn="";
+      }
+
       return `&nbsp;<div class="row">
               <div class="col-md-2 text-center">
-                <img class="tw-user-medium rounded-circle" src="static/img/jasmin_.jpg">
+                <img class="tw-user-medium rounded-circle" src="${avatar_url}"> 
               </div>
               <div class="col-md-10">
                 <div class="row tweet-info">
                   <div class="col-md-auto">
-                    <button id="button-" class="btn btn-outline-danger float-right" value = "${id}" onclick="removeItem(this.value)"><span class="oi oi-trash float-right"></button>
+                    
                     <span class="tweet-username" id="${id}name">${name}</span>
                     <span class="tweet-usertag text-muted" id="${id}email">${email}</span>&nbsp;
                   <div>
@@ -146,7 +179,6 @@
                     `<span class="tweet-age text-muted" >post : ${db_datetime_crested}</span>
                     <span class="tweet-age text-muted" > | edit : ${db_datetime_updated}</span>`
                     }
-                    <button id="button-" class="btn btn-outline-warning float-right" value="${id}" onclick="prePopulateBlog(this.value)"><span class="oi oi-brush "></button>
                   </div>
                 </div>
                   <div class="col tweet-arrow text-muted">
@@ -155,11 +187,8 @@
                 <div class="tweet-text" >
                   <span id="${id}message">${message}</span>
                 </div>
-                <div class="row text-muted"><br> 
-                  <div class="col-md-3"><span class="oi oi-heart heartincon"></span></div>
-                  <div class="col-md-3"><span class="oi oi-bullhorn"></span></div>
-                  <div class="col-md-3"><span class="oi oi-loop-circular"></span></div>
-                  <div class="col-md-3"><span class="oi oi-envelope-open"></span></div>
+                <div class="row text-muted"><br>
+                  ${edit_delbtn}
                 </div>
               </div>
               <br>
@@ -167,6 +196,7 @@
 
     var blog = data.data.map(html);
     blog.forEach((blog) => {
+     
       document.getElementById("tweet-data").innerHTML = blog + document.getElementById("tweet-data").innerHTML;
     });
   }
@@ -177,12 +207,14 @@
   }
 
   function prePopulateBlog(id) {
+    
     document.documentElement.scrollTop = 0;
     $('#addpotstweet')[0].reset();
     $('#name').val(document.getElementById(id + 'name').innerHTML);
     $('#email').val(document.getElementById(id + 'email').innerHTML);
     $('#message').val(document.getElementById(id + 'message').innerHTML);
     $('#entryid').val(id);
+    toggleView();
   }
 
   function removeItem(id) {
@@ -199,25 +231,39 @@
   function toggleView() {
       if ($('#add-post').attr('hidden')) {
         $('#add-post').removeAttr('hidden');
-        $('#addpotstweet').attr('hidden', 'hidden');
+        $('.new-tweet-row').attr('hidden', 'hidden');
       } else {
         $('#add-post').attr('hidden', 'hidden');
-        $('#addpotstweet').removeAttr('hidden');
+        $('.new-tweet-row').removeAttr('hidden');
       }
   }
-  $( "button-follow" ).click(function() {
-   $( this ).toggleClass( "iconHeartActive" );
-  });
+  $("#add-post").click(function () {
+      clearForm();
+      toggleView();
+    });
 
-  // $("add_newpost").click(function (tweet-data){
-  //   $.getJSON("lab11/", function(tweet-data){
-  //     if(tweet.lengh == 0){
-  //     return;
-  //   }
-  //   i = tweet
-  //   $('#name').val(i.name);
-  //   $('#email').val(i.email);
-  // )};
+  $("#cancel_form").click(function () {
+      clearForm();
+      toggleView();
+    });
+
+  $("#logout").click(function () {
+     clearForm();
+     window.location.href = "lab13/logout";
+   });
+
+   $("#login").click(function () {
+     clearForm();
+     window.location.href = "lab13/login";
+   });
+
+   $("#signup").click(function () {
+     window.location.href = "lab13/signup";
+   });
+   
+   $("#profileedit").click(function () {
+     window.location.href = "lab13/password_change";
+   });
 </script>
 
 </html>
