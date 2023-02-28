@@ -3,6 +3,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 from app import db
 from .contact import Contact
+from .blogentry import BlogEntry
 
 class AuthUser(db.Model, UserMixin, SerializerMixin):
     __tablename__ = "auth_users"
@@ -20,10 +21,10 @@ class AuthUser(db.Model, UserMixin, SerializerMixin):
         self.password = password
         self.avatar_url = avatar_url
 
-    def update(self, name, email, password, avatar_url):
+    def update(self, name, email, avatar_url):
         self.name = name
         self.email = email
-        self.password = password
+        # self.password = password
         self.avatar_url = avatar_url
 
 class PrivateContact(Contact, UserMixin, SerializerMixin):
@@ -31,4 +32,11 @@ class PrivateContact(Contact, UserMixin, SerializerMixin):
 
     def __init__(self, firstname, lastname, phone, owner_id):
         super().__init__(firstname, lastname, phone)
+        self.owner_id = owner_id
+
+class PrivateBlogEntry(BlogEntry, UserMixin, SerializerMixin):
+    owner_id = db.Column(db.Integer, db.ForeignKey('auth_users.id'))
+
+    def __init__(self, name, email, message, owner_id,avatar_url):
+        super().__init__(name, email, message,avatar_url)
         self.owner_id = owner_id

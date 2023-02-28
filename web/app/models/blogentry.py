@@ -17,25 +17,25 @@ class BlogEntry(db.Model, SerializerMixin):
     avatar_url = db.Column(db.String(100))
     password = db.Column(db.String(100))
 
-    def __init__(self, name, email, message, avatar_url,password):
+    def __init__(self, name, email, message,avatar_url):
         self.name = name
         self.email = email
         self.message = message
         self.avatar_url = avatar_url
-        self.password = password
+        # self.password = password
 
-    def update(self, name, email, message, avatar_url,password):
+    def update(self, name, email, message,avatar_url):
         self.name = name
         self.email = email
         self.message = message
         self.avatar_url = avatar_url
-        self.password = password
-        
-class PrivateBlogEntry(BlogEntry, UserMixin, SerializerMixin):
-    owner_id = db.Column(db.Integer, db.ForeignKey('blogentry.id'))
+        # self.password = password
 
-    def __init__(self, name, emil, message,password,avatar_url, owner_id):
-        super().__init__(name, email, message,password,avatar_url)
-        self.owner_id = owner_id
+    def edit(self, name, email,avatar_url):
+        self.name = name
+        self.email = email
+        # self.message = message
+        self.avatar_url = avatar_url    
+
 
 

@@ -68,6 +68,7 @@
                 <form id="addpotstweet">
                   <button id="cancel_form" class="btn btn-outline-secondary" ><span class="oi oi-circle-x"></span></button>
                   <input type="hidden" id="avatar_url" name="avatar_url" value="{{ current_user.avatar_url }}">
+                  <input type="hidden" id="owner_id name="owner_id" value="{{ current_user.id }}">
                   <input type="text" maxlength="50" id="name" name="name" placeholder="Your name.." required value="{{ current_user.name }}" hidden="hidden">
                   <input type="email" id="email" name="email" placeholder="Your email.." required value="{{ current_user.email }}" hidden="hidden">
                   <textarea type="text" rows="3" maxlength="280" id="message" name="message" placeholder="Whats happening?" required></textarea>
@@ -262,7 +263,7 @@
    });
    
    $("#profileedit").click(function () {
-     window.location.href = "lab13/password_change";
+     window.location.href = "lab13/change";
    });
 </script>
 

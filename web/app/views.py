@@ -13,7 +13,7 @@ from app import db
 from app import login_manager
 from app.models.contact import Contact
 from app.models.blogentry import BlogEntry
-from app.models.authuser import AuthUser, PrivateContact
+from app.models.authuser import AuthUser, PrivateContact, PrivateBlogEntry
 from datetime import datetime
 
 
@@ -334,11 +334,7 @@ def lab13_login():
         # check if the user actually exists
         # take the user-supplied password, hash it, and compare it to the
         # hashed password in the database
-        if not user or not check_password_hash(user.password, password):
-            flash('Please check your login details and try again.')
-            # if the user doesn't exist or password is wrong, reload the page
-            return redirect(url_for('lab13_login'))
-
+        
         # if the above check passes, then we know the user has the right
         # credentials
         login_user(user, remember=remember)
@@ -432,7 +428,8 @@ def lab13_change():
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(str(result))
- 
+        id_ = current_user.id
+
         validated = True
         validated_dict = {}
         valid_keys = ['email', 'name', 'password']
@@ -441,9 +438,8 @@ def lab13_change():
         for key in result:
             app.logger.debug(str(key)+": " + str(result[key]))
             # screen of unrelated inputs
-            if not check_password_hash(current_user.password, password):
-                flash('Please check your login details and try again.')
-                return render_template('lab13/change.html')
+            if key not in valid_keys:
+                continue
 
             value = result[key].strip()
             if not value or value == 'undefined':
@@ -451,22 +447,44 @@ def lab13_change():
                 break
             validated_dict[key] = value
             # code to validate and add user to database goes here
-        # app.logger.debug("validation done")
+        app.logger.debug("validation done")
         if validated:
-            # app.logger.debug(current_user.id)
-            # app.logger.debug('validated dict: ' + str(validated_dict))
+            app.logger.debug('validated dict: ' + str(validated_dict))
             email = validated_dict['email']
             name = validated_dict['name']
             password = validated_dict['password']
-           
-            auth_users = AuthUser.query.get(current_user.id)
+
+            # if this returns a user, then the email already exists in database
+
+            users = AuthUser.query.filter_by(email=email).first()
+            if users and email != current_user.email:
+                flash('Please check your email details and try again.')
+                return redirect(url_for('lab13_change'))
+            
+            if not check_password_hash(current_user.password, password):
+                flash('Please check your login details and try again.')
+                # if the user doesn't exist or password is wrong, reload the page
+                return redirect(url_for('lab13_change'))
+
             # validated_dict['password'] = generate_password_hash(password, method='sha256')
             avatar_url = gen_avatar_url(email, name)
-            validated_dict['avatar_url'] = avatar_url
-            # add the new user to the database
-            auth_users.update(**validated_dict)
+            contact = AuthUser.query.get(id_)
+            contact.update( name=name, email=email, avatar_url=avatar_url)
+            db_microblog = PrivateBlogEntry.query.all()
+            microblog = list(map(lambda x: x.to_dict(), db_microblog))
+            for blog in microblog:
+                if blog['owner_id'] == id_:
+                    message = blog['message']
+                    db_microblog = PrivateBlogEntry.query.get(blog['id'])
+                    db_microblog.edit(name = name, email = email, avatar_url = avatar_url)
+
+            # blogEntries = PrivateBlogEntry.query.filter_by(owner_id=id_).all()
+            # validated_dict_blog = {'name': name, 'email': email,  'avatar_url': avatar_url}
+
+            # for blogEntry in blogEntries:
+            #     blogEntry.edit(**validated_dict_blog)
+
             db.session.commit()
-            app.logger.debug('validated dict : '+str(AuthUser.query.get(current_user.id)))
             
         return redirect(url_for('lab11_microblog'))
     return render_template('lab13/change.html')

@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 from app import app, db
 from app.models.contact import Contact
 from app.models.blogentry import BlogEntry
-from app.models.authuser import AuthUser, PrivateContact
+from app.models.authuser import AuthUser, PrivateContact, PrivateBlogEntry
 cli = FlaskGroup(app)
 
 
@@ -27,12 +27,10 @@ def seed_db():
     db.session.add(
         Contact(firstname='สมชาย', lastname='ทรงแบด', phone='081-111-1111'))
     # db.session.commit()
-    # db.session.add(
-        # PrivateBlogEntry(name='สมชาย', message='I Love You', email='Somchai@gmail.com',avatar_url='https://ui-avatars.com/api/?name=\สมชาย+ทรงแบด&background=83ee03&color=fff', owner_id=1))
     db.session.add(
-        PrivateBlogEntry(name='เจ้าหญิงจัสมิน', email='jasmin@gmail.com', message='I Love U Aladin',
-        password=generate_password_hash('1111',method='sha256'),
-        avatar_url='https://ui-avatars.com/api/?name=เจ้าหญิงจัสมิน&background=83ee03&color=fff', owner_id=1))
+        PrivateBlogEntry(name='สมชาย ทรงแบด', message='I Love You', email='flask@204212', owner_id=1,avatar_url='https://ui-avatars.com/api/?name=\สมชาย+ทรงแบด&background=83ee03&color=fff'))
+    # db.session.add(
+        # PrivateBlogEntry(name='เจ้าหญิงจัสมิน', email='jasmin@gmail.com', message='I Love U Aladin', owner_id=1))
         # BlogEntry(name='เจ้าหญิงจัสมิน', message='I Love U Aladin', email='jasmin@gmail.com',avatar_url='https://ui-avatars.com/api/?name=เจ้าหญิงจัสมิน&background=83ee03&color=fff'))
     db.session.commit()
     
