@@ -28,7 +28,7 @@ def seed_db():
         Contact(firstname='สมชาย', lastname='ทรงแบด', phone='081-111-1111'))
     # db.session.commit()
     db.session.add(
-        PrivateBlogEntry(name='สมชาย ทรงแบด', message='I Love You', email='flask@204212', owner_id=1,avatar_url='https://ui-avatars.com/api/?name=\สมชาย+ทรงแบด&background=83ee03&color=fff'))
+        PrivateBlogEntry(name='สมชาย ทรงแบด', message='I Love You', email='flask@204212', owner_id=1, avatar_url='https://ui-avatars.com/api/?name=\สมชาย+ทรงแบด&background=83ee03&color=fff'))
     # db.session.add(
         # PrivateBlogEntry(name='เจ้าหญิงจัสมิน', email='jasmin@gmail.com', message='I Love U Aladin', owner_id=1))
         # BlogEntry(name='เจ้าหญิงจัสมิน', message='I Love U Aladin', email='jasmin@gmail.com',avatar_url='https://ui-avatars.com/api/?name=เจ้าหญิงจัสมิน&background=83ee03&color=fff'))

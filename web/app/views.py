@@ -120,6 +120,7 @@ def lab10_remove_contacts():
     return lab10_db_contacts()
 
 @app.route('/lab11/remove_contact', methods=('GET', 'POST'))
+@login_required
 def lab11_remove_contacts():
     app.logger.debug("LAB11 - REMOVE")
     if request.method == 'POST':
@@ -127,9 +128,9 @@ def lab11_remove_contacts():
         id_ = result.get('id', '')
         try:
             blogentry = BlogEntry.query.get(id_)
-            # if blogEntry.owner_id == current_user.id:
-            db.session.delete(blogentry)
-            db.session.commit()
+            if blogEntry.owner_id == current_user.id:
+                db.session.delete(blogentry)
+                db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
             raise
